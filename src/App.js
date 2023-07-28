@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+
+import AuthorizationPage from './components/AuthorizationPage';
+import DashboardPage from './components/Dashboardpage';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import ViewBoardPage from './components/ViewBoardPage';
+import ViewListsPage from './components/ViewListsPage';
+import CardDetails from './components/CardDetails';
+ import './index.css'
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+ return (
+
+  
+  <Router>
+  <Routes>
+  <Route exact path="/" element={<AuthorizationPage  />} />
+  <Route exact path="/dashboard" element={<DashboardPage/>}/>
+
+  <Route exact path="/view-board/:boardId" element={<ViewBoardPage/>}/>
+  <Route exact path="/view-list/:boardId/:listId" element={<ViewListsPage/>}/>
+  <Route exact path="/card-details/:listId/:cardId" element={<CardDetails />}/>
+
+  </Routes>
+  </Router>
+  
+
+
+ )}  
+  
+
+ 
+  
+
 
 export default App;
