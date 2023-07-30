@@ -2,7 +2,7 @@ import React, { useEffect,useState,useCallback } from 'react';
 import {AiOutlinePlusCircle, AiFillDelete} from 'react-icons/ai';
 import {MdOutlineOpenInNew} from 'react-icons/md'
 import {GrUpdate} from 'react-icons/gr'
-
+import { ScaleLoader } from 'react-spinners'
 
 
 import axios from 'axios';
@@ -149,15 +149,38 @@ const handleViewBoard=(boardId)=>{
   window.location.href=(`view-board/${boardId}`)
 }
 
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+   
+    setTimeout(() => {
+      setLoading(false); 
+    }, 1000); // 
+  }, []);
 
    
   return (
+    <>
+{loading && ( 
+
+<div className="bg-gray-600 flex items-center justify-center min-h-screen">
+<ScaleLoader
+  color="#36d7b7"
+  height={35}
+  loading={loading}
+  margin={3}
+  radius={2}
+  speedMultiplier={1}
+  width={4}
+/>
+</div>
+)}
    
     <div className="min-h-screen bg-gradient-to-b from-teal-950 to bg-cyan-800 p-20">
     
       <h1 className="text-3xl font-bold  text-cyan-500">All Boards</h1>
 
-<h3 className="mb-10 text-green-400 text-xl font-bold mt-10">Create new board for your organization:</h3>
+<h3 className="mb-10 text-green-400 text-xl font-bold mt-10">Create new board </h3>
       <div className="flex gap-4 mb-4 items-center">
       <button className="bg-blue-500 text-white px-4 py-4 rounded-md flex items-center gap-2 hover:bg-blue-600 active:bg-blue-700 transition-colors font-semibold" onClick={handleCreateBoard}>
 
@@ -182,7 +205,7 @@ const handleViewBoard=(boardId)=>{
 
         
       </div>
-      <h4 className="font-bold text-green-400 mt-10 mb-10 text-xl">Your boards list:</h4>
+      <h4 className="font-bold text-green-400 mt-10 mb-10 text-xl"> Boards List</h4>
       <ul >
         {boards.map((board)=>( 
           <li key={board.id} className="bg-gradient-to-r from-purple-600 via-blue-400 to-pink-600 p-8 rounded-md shadow-md mb-4">
@@ -242,7 +265,7 @@ const handleViewBoard=(boardId)=>{
 
       </div>
     
-      
+      </>
   )
 }
 

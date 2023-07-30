@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom'
 import axios from 'axios';
-import {TbListDetails} from 'react-icons/tb'
+import {BiAddToQueue}  from "react-icons/bi";
+import {BsCardText, BsBoxArrowUpRight}  from "react-icons/bs";
+import { ScaleLoader } from 'react-spinners'
 
 
 const ViewListsPage = () => 
@@ -14,9 +16,21 @@ const [cardDescription, setCardDescription] = useState('')
 const apiKey = localStorage.getItem('apiKey');
 const apiToken = localStorage.getItem('apiToken');
 const {listId} = useParams();
+const [hoverCard, setHoverCard] = useState(null)
+const [loading, setLoading] = useState(true);
 
 
 
+
+//Loading Spinner 
+
+
+useEffect(() => {
+   
+    setTimeout(() => {
+      setLoading(false); 
+    }, 1000); 
+  }, []);
 
     //Fetching Cards
 
@@ -67,45 +81,82 @@ const handleCreateCard = async()=>{
 
   return (
   
+<>
 
-<div className="min-h-screen bg-gradient-to-b from-teal-950 to bg-cyan-700 p-20"> 
+
+{loading && ( 
+
+<div className="bg-gray-600 flex items-center justify-center min-h-screen">
+<ScaleLoader
+  color="#36d7b7"
+  height={35}
+  loading
+  margin={3}
+  radius={2}
+  speedMultiplier={1}
+  width={4}
+/>
+</div>
+)}
+
+<div className="min-h-screen bg-white p-20"> 
 
 
-    <h2 className="text-3xl font-bold  text-cyan-500 mb-10">Your Card List</h2>
+    <h2 className="text-3xl font-bold  text-teal-900 mb-10">Your Card List</h2>
 
     <div className="flex flex-wrap gap-20">
     
     {cards.map ((card) => (
-            <div key={card.id} className="bg-gradient-to-r from-green-700 to-yellow-300 p-4 mt-5 rounded-lg shadow-md font-bold mb-4 w-48 h-48 text-center hover:from-cyan-700 hover:to-cyan-500">
-                <div className="flex items-center justify-between spca-x-2">
+            <div key={card.id} className="bg-gradient-to-r from-blue-700 to-cyan-400 p-4 mt-5 rounded-lg shadow-md font-bold mb-4 w-48 h-48 text-center hover:from-cyan-700 hover:to-cyan-500 "
+            onMouseEnter={()=> setHoverCard(card.id)}
+            onMouseLeave={()=> setHoverCard(null)}>
+
+                
+                
         
-              <Link to={`/card-details/${listId}/${card.id}`} className="text-yellow-300 rounded-md  hover:text-black">
+              <Link to={`/card-details/${listId}/${card.id}`} className="rounded-md text-center p-4 transition-opacity" >
 
-             < TbListDetails classname="text-4xl"/>
 
-                <span>
-             <h2 className="text-black font-bold text-2xl mt-2 mb-2">
-                {card.name}</h2>
-                </span>
+            
+{hoverCard === card.id?(
+    <BsBoxArrowUpRight className="text-4xl font-bold  mt-8 ml-12" />
 
+): (
+    <div>
+    <span>
+    <h2 className="text-black font-bold text-2xl mt-2 mb-2">
+       {card.name}</h2>
+       </span>
+< BsCardText className="text-3xl ml-7 mt-5 font-extrabold text-yellow-300"/>
+</div>)}
+             
  </Link>
-             </div>
+
+ 
+             
             
-            
-              
    </div>
   )) }
   </div>
 
-  <h3> Want to make a new card for your selected list? </h3>
-    <input placeholder="card name" value={cardName} onChange={(e)=> setCardName(e.target.value)} />
-
-    <input type="text" placeholder="card description" value={cardDescription} onChange={(e)=> setCardDescription(e.target.value)} />
-
-    <button onClick={handleCreateCard}> Create Card</button>
-    
-    
+<div className="flex items-center space-x-2"> 
+  <h3 className= "text-2xl text-teal-900 mt-8 font-bold mb-5">
+     Add New Card </h3>
+     <BiAddToQueue className="text-2xl mt-3 text-teal-900 font-bold" />
   </div>
+  <div className="flex gap-4 mb-4 items-center"> 
+
+  
+    <input className="w-1/2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 border-black" placeholder="Card name" value={cardName} onChange={(e)=> setCardName(e.target.value)} />
+
+    <input className="w-1/2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 border-black" type="text" placeholder="Card description" value={cardDescription} onChange={(e)=> setCardDescription(e.target.value)} />
+
+    <button className="px-6 py-3 rounded bg-gradient-to-r from-blue-700 to-teal-600 font-bold hover:duration-100 hover:from-blue-500 hover:to-blue-500"
+    onClick={handleCreateCard}> Add </button>
+    
+    </div>
+  </div>
+  </>
     )}
 
 export default ViewListsPage
